@@ -1,0 +1,430 @@
+{
+    "payersData":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "PAYER’S name, street address, city or town, state or province, country, ZIP or 1a Total ordinary dividends foreign postal code, and telephone no."
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":df['payers_name'][i]+", "+df['payers_add'][i]+", "+df['payers_phn_no'][i]
+    }]
+},
+{
+    "payersTin":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "PAYER’S TIN"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"984 83-7917"
+    }]
+},
+{
+    "recipientsTin":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "RECIPIENT’S TIN"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"954 78-5318"
+    }]
+},
+{
+    "recipientsName":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "RECIPIENT’S name"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":df['recipient_name'][i]
+    }]
+},
+{
+    "recipientsStreetAddress":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "Street address (including apt. no.)"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":df['rec_street'][i]
+    }]
+},
+{
+    "recipientsAddress":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "Pasadena, Alabama, El Salvador and 68836"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":df['rec_cit_stat_zip'][i]
+    }]
+},
+{
+    "recipientsAccNo":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "Account number (see instructions)"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"LUOL74582946661113"
+    }]
+},
+{
+    "totalOrdinaryDividents":
+    [{
+        "coordinates":[[]],
+        "label":"key",
+        "text": "1a Total ordinary dividends"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['one_a'][i])
+    }]
+},
+{
+    "qualifiedDividends":
+    [{
+        "coordinates":[[]],
+        "label":"key",
+        "text": "1b Qualified dividends"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['one_b'][i])
+    }]
+},
+{
+    "totalCapitalGain":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "2a Total capital gain distr."
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['two_a'][i])
+    }]
+},
+{
+    "section1202Gain":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "2c Section 1202 gain"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['two_c'][i])
+    }]
+},
+{
+    "section897Ordinary":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "2e Section 897 ordinary"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['two_e'][i])
+    }]
+},
+{
+    "nondividendDistributions":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "3 Nondividend distributions"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['three'][i])
+    }]
+},
+{
+    "section199ADividends":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "5 Section 199A dividends"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['five'][i])
+    }]
+},
+{
+    "foreignTaxPaid":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "7 Foreign tax paid"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['seven'][i])
+    }]
+},
+{
+    "cashLiquidationDistributions":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "9 Cash liquidation distributions"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['nine'][i])
+    }]
+},
+{
+    "exemptinterestDividends":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "12 Exempt-interest dividends"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['twle'][i])
+    }]
+},
+{
+    "state":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "14 State"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"MT"
+    }]
+},
+{
+    "stateIdNo":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "15 State identification no."
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"013-83-9427"
+    }]
+},
+{
+    "ombNo":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "OMB No."
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"1545-0110"
+    }]
+},
+{
+    "form":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "Form"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"1099-DIV"
+    }]
+},
+{
+    "revDate":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "(Rev."
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"January 2024)"
+    }]
+},
+{
+    "FY":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "For calendar year"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text": int(df['caledar_year'][i])
+    }]
+},
+{
+    "collectibles":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "2d Collectibles (28%) gain"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['two_d'][i])
+    }]
+},
+{
+    "section897Capital":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "2f Section 897 capital gain"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['two_f'][i])
+    }]
+},
+{
+    "federalIncomeTax":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "4 Federal income tax withheld"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['four'][i])
+    }]
+},
+{
+    "investmentExpenses":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "6 Investment expenses"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['six'][i])
+    }]
+},
+{
+    "foreignOrUS":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "8 Foreign country or U.S. possession"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['foreign_country'][i])
+    }]
+},
+{
+    "noncashLiquidationDistributions":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "10 Noncash liquidation distributions"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['ten'][i])
+    }]
+},
+{
+    "specifiedPrivateActivityBondInterestDividends":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "13 Specified private activity bond interest dividends"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['trten'][i])
+    }]
+},
+{
+    "unrecapSec1250Gain":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "2b Unrecap. Sec. 1250 gain"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['two_b'][i])
+    }]
+},
+{
+    "statetaxWithheld":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "16 State tax withheld"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ "+str(df['sixten'][i])
+    }]
+},
+{
+    "FATCAFilingRequirement":
+    [{
+        "coordinates":[[]],
+        "label": "key",
+        "text": "11 FATCA filing requirement"
+    },
+    {
+        "coordinates":[[]],
+        "label":"value",
+        "text":"$ 29549.18"
+    }]
+}
+]
