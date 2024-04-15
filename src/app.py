@@ -1,11 +1,12 @@
 import streamlit as st
 import pandas as pd
 from PIL import Image
-import os
+import os, json
 from dotenv import load_dotenv
 from pdf2image import convert_from_path, convert_from_bytes
 import tempfile
 from langchain_groq import ChatGroq
+from groq import Groq
 from langchain.agents.agent_types import AgentType
 from langchain_experimental.agents.agent_toolkits import create_csv_agent
 from donut_inference import inference
@@ -16,34 +17,70 @@ from RAG import rag
 load_dotenv()
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 
-llm = ChatGroq(temperature=0, groq_api_key=GROQ_API_KEY, model_name="mixtral-8x7b-32768")
+# llm = ChatGroq(temperature=0, groq_api_key=GROQ_API_KEY, model_name="mixtral-8x7b-32768")
+client = Groq(api_key=GROQ_API_KEY)
 
 if "current_page" not in st.session_state:
     st.session_state["current_page"] = "upload"
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "Hi, How can I help you today?"}]
-if "csv_agent" not in st.session_state:
-    st.session_state.csv_agent = None
+if "conversation_state" not in st.session_state:
+        st.session_state["conversation_state"] = [{"role": "assistant", "content": "Hi, How can I help you today?"}]
+if "json_data" not in st.session_state:
+    st.session_state.json_data = None
 if "rag" not in st.session_state:
     st.session_state.rag = None
     
 USER_AVATAR = "👤"
 BOT_AVATAR = "🤖"
 
-def csv_chat_interface(agent):
+def csv_chat_interface(data):
     st.title("DocQA")
     for message in st.session_state.messages:
         image = USER_AVATAR if message["role"] == "user" else BOT_AVATAR
         with st.chat_message(message["role"], avatar=image):
             st.markdown(message["content"])
+    
+    system_prompt = f'''You are a helpful assistant, you will use the provided context to answer user questions. You are great at reding json data.
+Read the given context before answering questions and think step by step. If you can not answer a user question based on 
+the provided context, inform the user. Do not use any other information for answering user. Provide a detailed answer to the question.\n
+Context:\n
+{data}
+'''
+    print("System Prompt: ", system_prompt)
     if prompt := st.chat_input("User input"):
         st.chat_message("user", avatar=USER_AVATAR).markdown(prompt)
         st.session_state.messages.append({"role": "user", "content": prompt})
-        result = agent.run(str(prompt))
+        conversation_context = st.session_state["conversation_state"]
+        conversation_context.append({"role": "user", "content": prompt})
+        # Define an empty context variable
+        context = []
+        # Add system prompt to context if desired
+        context.append({"role": "system", "content": system_prompt})
+        # Add conversation context to context
+        context.extend(st.session_state["conversation_state"])
+        response = client.chat.completions.create(
+            messages=context,
+            model="mixtral-8x7b-32768",
+            temperature=0,
+            max_tokens=1024,
+            top_p=1,
+            stop=None,
+            stream=True,
+        )
         
         with st.chat_message("assistant", avatar=BOT_AVATAR):
-            st.markdown(str(result))
-        st.session_state.messages.append({"role": "assistant", "content": str(result)})
+            # st.markdown(str(result))
+            result = ""
+            res_box = st.empty()
+            for chunk in response:
+                if chunk.choices[0].delta.content:
+                    new_content = chunk.choices[0].delta.content
+                    result += new_content   # Add a space to separate words
+                    res_box.markdown(f'{result}')
+        assistant_response = result
+        st.session_state.messages.append({"role": "assistant", "content": assistant_response})
+        conversation_context.append({"role": "assistant", "content": assistant_response})
         
 def rag_chat_interface(rag):
     st.title("DocQA")
@@ -84,6 +121,7 @@ def upload():
     uploaded_files = st.file_uploader("Choose PDF files", type="pdf", accept_multiple_files=True)
     full_string = ""
     all_data = []
+    # combined_data_dict = {}
     for uploaded_file in uploaded_files:
         if uploaded_file is not None:
             with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_file:
@@ -94,6 +132,7 @@ def upload():
                 # print(type(pages[0]))
                 img_classification = pages[0].resize((1024, 1024), Image.LANCZOS)
                 pred = predict(img_classification)
+                
                 if pred != "Non_Form":
                     img = pages[0].resize((1864, 1440), Image.LANCZOS)
                     # st.write(width, height)
@@ -102,25 +141,23 @@ def upload():
                     # for key, value in data_dict['items'].items():
                     #     items_string += f"{key}: {value}\n"
                     # full_string += items_string
-                    df = pd.DataFrame([data_dict['items']], columns=data_dict['items'].keys())
-                    all_data.append(df)
+                    # combined_data_dict.update(data_dict)
+                    df = pd.DataFrame([data_dict], columns=data_dict.keys())
+                    all_data.append(data_dict)
                 else:
                     text = extract_text(temp_file.name)
                     full_string += text
             os.remove(temp_file.name)
     
     if all_data:
-        combined_df = pd.concat(all_data, ignore_index=True)
-        st.dataframe(combined_df)
-        with tempfile.NamedTemporaryFile(mode='w+', suffix='.csv', delete=False) as temp_csv:
-            combined_df.to_csv(temp_csv.name, index=False)
-            agent = create_csv_agent(
-            llm,
-            temp_csv.name,
-            verbose=True,
-            agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-            )
-            st.session_state.csv_agent = agent
+        # combined_df = pd.concat(all_data, ignore_index=True)
+        # st.dataframe(combined_df)
+        # df = pd.DataFrame([combined_data_dict], columns=combined_data_dict.keys())
+        # st.dataframe(df)
+        all_data_string = "\n\n".join(json.dumps(data_dict) for data_dict in all_data)
+        st.session_state.json_data = all_data_string
+        # print(all_data)
+        # st.write(all_data)
         if st.button("Start Chatting"):
             st.session_state["current_page"] = "csv_chat_ui"
             st.rerun()
@@ -137,7 +174,7 @@ def main():
     if st.session_state["current_page"] == "upload":
         upload()
     elif st.session_state["current_page"] == "csv_chat_ui":
-        csv_chat_interface(st.session_state.get('csv_agent'))
+        csv_chat_interface(st.session_state.get('json_data'))
     elif st.session_state["current_page"] == "rag_ui":
         rag_chat_interface(st.session_state.get('rag'))         
 if __name__ == '__main__':
