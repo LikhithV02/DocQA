@@ -137,12 +137,14 @@ def upload():
                     img = pages[0].resize((1864, 1440), Image.LANCZOS)
                     # st.write(width, height)
                     data_dict = inference(img)
+                    data_dict['filename'] = uploaded_file.name
                     # items_string = ""
                     # for key, value in data_dict['items'].items():
                     #     items_string += f"{key}: {value}\n"
                     # full_string += items_string
                     # combined_data_dict.update(data_dict)
-                    df = pd.DataFrame([data_dict], columns=data_dict.keys())
+                    # df = pd.DataFrame([data_dict], columns=data_dict.keys())
+                    print(data_dict)
                     all_data.append(data_dict)
                 else:
                     text = extract_text(temp_file.name)
@@ -168,7 +170,19 @@ def upload():
         if st.button("Start Chatting"):
             st.session_state["current_page"] = "rag_ui"
             st.rerun()
-        
+    st.markdown('''
+# Instructions:
+
+1. **Ensure all uploads are in PDF format**. This ensures compatibility and uniform processing across documents.
+
+2. **Submit forms in portrait orientation only**. Landscape formats are not supported and may result in processing errors.
+
+3. **Forms must have a minimum resolution of 1864x1440**. This is crucial for the clarity and legibility necessary for accurate parsing.
+
+4. **Multiple documents can be uploaded simultaneously**; however, the combined size of these documents should not exceed 10MB.
+
+5. **Donut model parses specific forms**: 1099-Div, 1099-Int, W2, and W3. Non-form documents are also processable.
+            ''')    
 
 def main():
     if st.session_state["current_page"] == "upload":
